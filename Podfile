@@ -4,5 +4,5 @@ platform :ios, '9.0'
 
 target 'NativeAdvancedExample' do
   use_frameworks!
-  pod 'Google-Mobile-Ads-SDK'
+  pod 'Google-Mobile-Ads-SDK', '8.1.0'
 end

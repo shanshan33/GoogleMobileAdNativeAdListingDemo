@@ -26,7 +26,7 @@ class CollectionViewCell : UICollectionViewCell {
         }
     }
 
-    func setAdView(_ nativeAdView: GADUnifiedNativeAdView) {
+    func setAdView(_ nativeAdView: GADNativeAdView) {
         nativeAdView.removeFromSuperview()
         nativeAdView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(nativeAdView)

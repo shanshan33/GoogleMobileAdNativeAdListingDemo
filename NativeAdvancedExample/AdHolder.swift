@@ -9,18 +9,18 @@
 import GoogleMobileAds
 
 class AdHolder : NSObject {
-    private var completion: (GADUnifiedNativeAdView) -> Void = { _ in }
+    private var completion: (GADNativeAdView) -> Void = { _ in }
     private var loaded = false
     private var adLoader: GADAdLoader!
-    private lazy var nativeAdView: GADUnifiedNativeAdView = {
+    private lazy var nativeAdView: GADNativeAdView = {
         let nibObjects = Bundle.main.loadNibNamed("UnifiedNativeAdView", owner: nil, options: nil)!
-        let adView = nibObjects.first as! GADUnifiedNativeAdView
+        let adView = nibObjects.first as! GADNativeAdView
         return adView
     }()
     private let adUnitID = "ca-app-pub-3940256099942544/3986624511"
     var rootViewController: UIViewController!
 
-    func load(completion: @escaping (GADUnifiedNativeAdView) -> Void) {
+    func load(completion: @escaping (GADNativeAdView) -> Void) {
         if adLoader?.isLoading == true {
             self.completion = completion
             return
@@ -31,24 +31,25 @@ class AdHolder : NSObject {
         }
         adLoader = GADAdLoader(
             adUnitID: adUnitID, rootViewController: rootViewController,
-            adTypes: [.unifiedNative], options: nil)
+            adTypes: [.native], options: nil)
         adLoader.delegate = self
         adLoader.load(GADRequest())
         self.completion = completion
     }
 }
 
-extension AdHolder: GADUnifiedNativeAdLoaderDelegate {
-
-    func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: GADRequestError) {
-
+extension AdHolder: GADNativeAdLoaderDelegate {
+    func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: Error) {
+        
     }
 
-    func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
+    func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADNativeAd) {
         // Populate the native ad view with the native ad assets.
         // The headline and mediaContent are guaranteed to be present in every native ad.
-        (nativeAdView.headlineView as? UILabel)?.text = nativeAd.headline
-        nativeAdView.mediaView?.mediaContent = nativeAd.mediaContent
+        if let headlineView = self.nativeAdView.headlineView as? UILabel {
+            headlineView.text = nativeAd.headline
+        }
+        self.nativeAdView.mediaView?.mediaContent = nativeAd.mediaContent
 
         // Some native ads will include a video asset, while others do not. Apps can use the
         // GADVideoController's hasVideoContent property to determine if one is present, and adjust their
