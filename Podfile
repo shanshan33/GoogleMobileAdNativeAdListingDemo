@@ -1,8 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '9.0'
+platform :ios, '13.0'
 
 target 'NativeAdvancedExample' do
   use_frameworks!
-  pod 'Google-Mobile-Ads-SDK', '8.1.0'
+  pod 'Google-Mobile-Ads-SDK', '9.1.0'
 end
